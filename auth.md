@@ -1,0 +1,3 @@
+# Auth
+
+Namespace auth slice.
