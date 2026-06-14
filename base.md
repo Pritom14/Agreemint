@@ -1,0 +1,3 @@
+# Base
+
+Namespace base slice.
