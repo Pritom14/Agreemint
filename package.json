@@ -1,0 +1,11 @@
+{
+	"name": "agreemint",
+	"version": "0.1.0",
+	"description": "Tiny TODO API used as a sandbox target for Agent Orchestrator e2e testing",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"test": "node --test"
+	},
+	"license": "MIT"
+}
