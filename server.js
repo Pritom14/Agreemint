@@ -32,6 +32,16 @@ const server = http.createServer(async (req, res) => {
 		return json(res, 200, todos);
 	}
 
+	const idMatch = url.pathname.match(/^\/todos\/(\d+)$/);
+	if (req.method === "GET" && idMatch) {
+		const id = Number(idMatch[1]);
+		const todo = todos.find((t) => t.id === id);
+		if (!todo) {
+			return json(res, 404, { error: "not found" });
+		}
+		return json(res, 200, todo);
+	}
+
 	if (req.method === "POST" && url.pathname === "/todos") {
 		let body;
 		try {
