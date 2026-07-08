@@ -41,6 +41,14 @@ test("todo lifecycle", async (t) => {
 	assert.strictEqual(listed.status, 200);
 	assert.ok(listed.body.some((t) => t.id === created.body.id));
 
+	const fetched = await request("GET", `/todos/${created.body.id}`);
+	assert.strictEqual(fetched.status, 200);
+	assert.strictEqual(fetched.body.id, created.body.id);
+	assert.strictEqual(fetched.body.title, "write tests");
+
+	const missingId = await request("GET", "/todos/999999");
+	assert.strictEqual(missingId.status, 404);
+
 	const missing = await request("GET", "/nope");
 	assert.strictEqual(missing.status, 404);
 });
