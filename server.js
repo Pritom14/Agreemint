@@ -5,6 +5,11 @@ const PORT = process.env.PORT || 3000;
 let nextId = 1;
 const todos = [];
 
+function logger(level, message, data = {}) {
+	const timestamp = new Date().toISOString();
+	console.log(`[${timestamp}] ${level}: ${message}`, data);
+}
+
 function json(res, status, body) {
 	res.writeHead(status, { "Content-Type": "application/json" });
 	res.end(JSON.stringify(body));
@@ -27,6 +32,7 @@ function readBody(req) {
 
 const server = http.createServer(async (req, res) => {
 	const url = new URL(req.url, `http://localhost:${PORT}`);
+	logger("INFO", `${req.method} ${url.pathname}`);
 
 	if (req.method === "GET" && url.pathname === "/todos") {
 		return json(res, 200, todos);
@@ -49,7 +55,7 @@ const server = http.createServer(async (req, res) => {
 
 if (require.main === module) {
 	server.listen(PORT, () => {
-		console.log(`agreemint listening on http://localhost:${PORT}`);
+		logger("INFO", `agreemint listening on http://localhost:${PORT}`);
 	});
 }
 
