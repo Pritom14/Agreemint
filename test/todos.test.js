@@ -3,6 +3,10 @@ const assert = require("node:assert");
 const http = require("node:http");
 const { server } = require("../server.js");
 
+function testLogger(message) {
+	console.log(`[TEST] ${new Date().toISOString()} - ${message}`);
+}
+
 function request(method, path, body) {
 	return new Promise((resolve, reject) => {
 		const addr = server.address();
@@ -24,14 +28,17 @@ function request(method, path, body) {
 }
 
 test("todo lifecycle", async (t) => {
+	testLogger("Starting todo lifecycle test");
 	await new Promise((resolve) => server.listen(0, resolve));
 	t.after(() => server.close());
 
 	const empty = await request("GET", "/todos");
+	testLogger("GET /todos completed");
 	assert.strictEqual(empty.status, 200);
 	assert.ok(Array.isArray(empty.body));
 
 	const created = await request("POST", "/todos", { title: "write tests" });
+	testLogger(`Created todo with id: ${created.body?.id}`);
 	assert.strictEqual(created.status, 201);
 	assert.strictEqual(created.body.title, "write tests");
 	assert.strictEqual(created.body.done, false);
